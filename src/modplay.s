@@ -899,7 +899,7 @@ peppitoReadIns:
 ;	Sample data
 
 
-		;lda ptrPepSmpD+0											; FIRST TIME HERE, PTRPEPSMPD countains start of sample data ($0804503c)
+		;lda ptrPepSmpD+0											; FIRST TIME HERE, PtrPepSmpD countains start of sample data ($0804503c)
 		;sta $0800+0
 		;lda ptrPepSmpD+1
 		;sta $0800+1
@@ -1042,17 +1042,11 @@ peppitoReadIns:
 
 ;	Fine tune
 		LDZ	#$18
-
 		NOP
 		LDA	(ptrPepModF), Z
 		AND	#$0F
 		STA	valPepTmp0
 		INZ
-
-
-
-
-
 		AND	#$08
 		STA	valPepTmp0 + 1
 
@@ -1142,7 +1136,6 @@ peppitoReadSeq:
 		CPZ	valPepMaxP
 		BNE	@loop0
 
-
 		;LDA	ptrPepModF + 0											; we're at the end of the sequence data, which is where the sample data starts
 		;STA	ptrPepSmpD + 0											; so store that. PtrPepSmpD is later used in peppitoReadIns to set the starts of
 		;LDA	ptrPepModF + 1											; all the sample starts
@@ -1152,13 +1145,13 @@ peppitoReadSeq:
 		;LDA	ptrPepModF + 3
 		;STA	ptrPepSmpD + 3
 
-		lda #$00														; set start of sample data to $40000
+		lda #<.loword(sampledata)										; set start of sample data to $40000
 		sta ptrPepSmpD+0
-		lda #$00
+		lda #>.loword(sampledata)
 		sta ptrPepSmpD+1
-		lda #$04
+		lda #<.hiword(sampledata)
 		sta ptrPepSmpD+2
-		lda #$00
+		lda #>.hiword(sampledata)
 		sta ptrPepSmpD+3
 
 		RTS

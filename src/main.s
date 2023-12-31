@@ -10,6 +10,7 @@
 .define screenchars2	$30000
 
 .define moddata			$08040000
+.define sampledata		$00040000
 
 .define x1				$90								; overwrites rotation matrix in ZP/BP, but we're done with that anyway
 .define y1				$94
@@ -812,6 +813,7 @@ irq1
 
 		lda #$b0
 		sta $d020
+		;DMA_RUN_JOB copysampledatajob
 		jsr peppitoPlay
 		lda #$00
 		sta $d020
@@ -1428,7 +1430,7 @@ copysampledatajob
 				; f018a = 11 bytes, f018b is 12 bytes
 				.byte $0a ; Request format is F018A
 				.byte $80, ($0804503c >> 20) ; sourcebank
-				.byte $81, ($00040000 >> 20) ; destbank
+				.byte $81, (sampledata >> 20) ; destbank
 
 				.byte $82, 0 ; Source skip rate (256ths of bytes)
 				.byte $83, 1 ; Source skip rate (whole bytes)
@@ -1444,8 +1446,8 @@ copysampledatajob
 				.word $0804503c & $ffff
 				.byte ($0804503c >> 16)
 
-				.word $00040000 & $ffff
-				.byte (($00040000 >> 16) & $0f)
+				.word sampledata & $ffff
+				.byte ((sampledata >> 16) & $0f)
 
 ; -------------------------------------------------------------------------------------------------
 

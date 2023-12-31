@@ -36,6 +36,7 @@ MEGAADDRESS		= megatool -a
 MEGACRUNCH		= megatool -c
 MEGAIFFL		= megatool -i
 MEGAMOD			= MegaMod
+
 EL				= etherload
 XMEGA65			= H:\xemu\xmega65.exe
 MEGAFTP			= mega65_ftp -e
